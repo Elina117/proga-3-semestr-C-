@@ -1,55 +1,49 @@
 #include <iostream>
 #include <vector>
 
-// Функция для вычисления производной многочлена
-std::vector<double> derivative(const std::vector<double>& coefficients) {
-    int n = coefficients.size() - 1;
-    std::vector<double> result(n, 0.0);
-    for (int i = 1; i <= n; i++) {
-        result[i - 1] = i * coefficients[i];
-    }
-    return result;
-}
-
 int main() {
     int n; // Степень многочлена P(x)
-    double s; // Коэффициент s
-    std::vector<double> P_coefficients;
-
-    // Ввод степени многочлена и коэффициента s
-    std::cout << "Введите степень многочлена n: ";
+    double s, t; // Действительные числа s и t
+    std::vector<double> P; // Коэффициенты многочлена P(x)
+    
+    std::cout << "Введите степень многочлена P(x): ";
     std::cin >> n;
-    std::cout << "Введите коэффициент s: ";
-    std::cin >> s;
 
-    // Ввод коэффициентов многочлена P(x)
-    std::cout << "Введите коэффициенты многочлена P(x) (начиная с коэффициента x^0 и заканчивая x^n): ";
+    std::cout << "Введите коэффициенты многочлена P(x) (начиная с коэффициента при x^0 и заканчивая коэффициентом при x^" << n << "): ";
     for (int i = 0; i <= n; i++) {
         double coefficient;
         std::cin >> coefficient;
-        P_coefficients.push_back(coefficient);
+        P.push_back(coefficient);
     }
 
-    // Умножение на (s * x^2)
-    for (int i = 0; i <= n; i++) {
-        P_coefficients[i] *= s;
-    }
+    std::cout << "Введите значение s: ";
+    std::cin >> s;
+
+    std::cout << "Введите значение t: ";
+    std::cin >> t;
 
     // Вычисление производной многочлена P(x)
-    std::vector<double> P_prime_coefficients = derivative(P_coefficients);
+    std::vector<double> P_prime(n); // Массив для коэффициентов производной P'(x)
+    for (int i = 0; i < n; i++) {
+        P_prime[i] = (i + 1) * P[i + 1]; // Производная коэффициента x^n равна n * коэффициент x^(n-1)
+    }
+
+    // Умножение многочлена P(x) на (s*x^2 + t)
+    std::vector<double> result(n + 3); // Результат будет многочленом степени n + 2
+    for (int i = 0; i <= n; i++) {
+        result[i + 2] = s * P[i]; // Умножаем каждый коэффициент P(x) на s и сдвигаем вправо на 2
+    }
+    
+    // Добавление P'(x) к результату
+    for (int i = 0; i <= n; i++) {
+        result[i] += P_prime[i];
+    }
 
     // Вывод результата
-    std::cout << "Результат: (s * x^2)P(x) + P'(x) = ";
-    for (int i = 0; i <= n; i++) {
-        std::cout << P_coefficients[i] << "x^" << i;
-        if (i < n) {
-            std::cout << " + ";
-        }
-    }
-    std::cout << " + ";
-    for (int i = 0; i < n; i++) {
-        std::cout << P_prime_coefficients[i] << "x^" << i;
-        if (i < n - 1) {
+    std::cout << "Результат многочлена (s*x^2 + t)*P(x) + P'(x): ";
+    for (int i = 0; i <= n + 2; i++) {
+        std::cout << result[i] << "x^" << i;
+        if (i < n + 2) {
             std::cout << " + ";
         }
     }
