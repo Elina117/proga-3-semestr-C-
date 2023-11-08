@@ -8,7 +8,7 @@ int main() {
 
     int k = 0;
     double sum_of_num = power;
-    while (sum_of_num < 1.0) {
+    while (sum_of_num <= 1.0) {
         sum_of_num *= 10;
         k++;
     }

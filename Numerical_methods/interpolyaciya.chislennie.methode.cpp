@@ -4,10 +4,9 @@
 
 using namespace std;
 
-vector<double> define_sum(double x, double e = pow(10, -6))
+double define_sum(double x, double e = pow(10, -6))
 {
     const double PI = 3.141592653589793;
-    vector<double>  ar_sum;
     double q_n = (-pow(x, 2))/3;
     double a_0 = x;
 
@@ -25,33 +24,72 @@ vector<double> define_sum(double x, double e = pow(10, -6))
         n++;
  
     }
-    ar_sum.push_back(a_0);
-    ar_sum.push_back(n);
-    ar_sum.push_back((2/pow(PI, 0.5))*sum_row);
+   
+    sum_row*=(2/pow(PI, 0.5));
     
-    return ar_sum;
+    return sum_row;
     
 }
+
+double L_n(double x, vector<double> list_x) 
+{
+
+    double sum = 0;
+
+    for (int i = 0; i < list_x.size(); i++) {
+        double x_i = list_x[i];
+        double mult_x = 1;
+
+        for (int j = 0; j < list_x.size(); j++) {
+            if (i == j) {
+                continue; 
+            }
+
+            mult_x *= (x - x_i) / (x_i - list_x[j]);
+        }
+
+        sum += define_sum(x_i) * mult_x;
+    }
+
+    return sum;
+}
+
 
 int main()
 {
     double a = 0;
     double b = 2;
-    double h = (a+b)/5;
-    double x;
+    double h = (b-a)/5;
+    double x = a; //табулирование
 
-    for(x = a; x<=b; x+=h)
+    vector<double> list_x;
+
+    while(x<=b)
     {
-        vector<double> result = define_sum(x);
-        
-        cout << "x = " << x << ": ";
-        for (size_t i = 0; i < result.size(); i += 3)
-        {
-            cout << "a_" << i / 3 << "=" << result[i] << ", n_" << i / 3 << "=" << result[i + 1] << ", sum_" << i / 3 << "=" << result[i + 2] << " ";
-        }
-        cout << endl;
-        
+        list_x.push_back(x);
+        x+=h;
+    }
+    for (int i = 0; i < list_x.size(); i++)
+    {
+        cout << "sum(" << list_x[i] << ") = " << define_sum(list_x[i]) << endl;
     }
 
-    return 0;
+    double m = 10;
+    double h_ = (b-a)/m;
+
+    double max_diff = 0;
+    
+    for(int i = 0; i<=m; i++)
+    {
+        double x_i = i*h_;
+        double Ln = L_n(x_i, list_x);
+        double erf_x = define_sum(x_i);
+
+        max_diff = max(abs(Ln-erf_x), max_diff);
+
+        cout << "x(" << i << ") : " << x_i << ";" << "Значение L_n(x_" << i << ") : " << Ln << ";" << "Погрешность интерполяции: " << abs(erf_x-Ln) << "\n";
+
+    }
+
+    cout << "Максимальная разница: " << max_diff;
 }

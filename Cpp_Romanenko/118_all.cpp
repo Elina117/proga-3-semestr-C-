@@ -1,78 +1,106 @@
 #include <iostream>
+#include <cmath>
 #include <vector>
 
-int main() {
-    int N;
-    std::cout << "Введите размерность матрицы N: ";
-    std::cin >> N;
-
-    // Создаем матрицу и заполняем её вещественными числами
-    std::vector<std::vector<double>> matrix(N, std::vector<double>(N));
-    std::cout << "Введите элементы матрицы:" << std::endl;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            std::cin >> matrix[i][j];
-        }
-    }
-
-    double sum = 0.0;
-
-    // Проходим по диагональным квадратам
-    for (int d = 0; d < N - 1; d++) {
-        double product = 1.0;
-        for (int i = 0; i < N - d; i++) {
-            product *= matrix[i][i + d];
-        }
-        sum += product;
-    }
-
-    // Выводим сумму произведений элементов диагональных квадратов
-    std::cout << "Сумма произведений элементов диагональных квадратов: " << sum << std::endl;
-
-    return 0;
-}
-
-#include <iostream>
-#include <vector>
-
-void find_Isomorphic(std::vector<int>& numbers, int N) {
-    for (int i = 0; i < numbers.size(); i++) {
-        if (numbers[i] != -1) {
-            int remainder = numbers[i] % N;
-            for (int j = i + 1; j < numbers.size(); j++) {
-                if (numbers[j] != -1 && numbers[j] % N == remainder) {
-                    numbers[j] = -1;
-                }
-            }
-        }
-    }
-}
+//118(а)
 
 int main() {
-    int N;
-    std::cout << "Введите N: ";
-    std::cin >> N;
+  
 
-    int numElements;
-    std::cout << "Введите количество элементов в векторе: ";
-    std::cin >> numElements;
+   double sum = 0.0;
+   bool wow = true;  
 
-    std::vector<int> numbers(numElements);
+   for (int i = 1; i <= 10000; ++i) {
+       if (wow) {
+           sum += 1.0 / i;
+       }
+       else {
+           sum -= 1.0 / i;
+       }
 
-    std::cout << "Введите элементы вектора: ";
-    for (int i = 0; i < numElements; i++) {
-        std::cin >> numbers[i];
-    }
+       wow = !wow;
+   }
 
-    find_Isomorphic(numbers, N);
+   std::cout << "Результат: " << sum << std::endl;
 
-    std::cout << "Результат после удаления изоморфных элементов:" << std::endl;
-    for (int num : numbers) {
-        if (num != -1) {
-            std::cout << num << " ";
-        }
-    }
-
-    return 0;
+   return 0;
 }
 
+//118(б)
+ 
+int main() {
+  
+
+   double sum1 = 0.0;
+   double sum2 = 0.0;
+   double sum = 0.0; 
+
+   for (int i = 1; i <= 9999; i = i + 2) 
+   {
+       sum1 += 1.0 / i;
+   }
+
+   for (int i = 2; i <= 10000; i=i+2) 
+   {
+       
+       sum2 += 1.0 / i;
+       
+   }
+
+   sum = sum1 - sum2;
+
+   std::cout << "Результат: " << sum << std::endl;
+
+   return 0;
+}
+
+//118(в)
+
+int main() {
+   
+
+   double sum = 0.0;
+   bool wow = true;  
+
+   for (int i = 10000; i >= 1; i--) {
+       if (wow) {
+           sum -= 1.0 / i;
+       }
+       else {
+           sum += 1.0 / i;
+       }
+
+       wow = !wow;
+   }
+
+   std::cout << "Результат: " << sum << std::endl;
+
+   return 0;
+}
+
+//118(г)
+
+int main() {
+   
+
+   double sum1 = 0.0;
+   double sum2 = 0.0;
+   double sum = 0.0; 
+
+   for (int i = 9999; i >=1;i=i-2 )
+   {
+       sum1 += 1.0 / i;
+   }
+
+   for (int i = 10000; i >=2; i=i-2) {
+       
+       sum2 -= 1.0 / i;
+       
+   }
+
+   sum = sum1 + sum2;
+
+   std::cout << "Результат: " << sum << std::endl;
+
+   return 0;
+}
